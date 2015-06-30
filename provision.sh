@@ -21,4 +21,5 @@ sudo apt-get install -y blackfire-php blackfire-agent
 
 # blackfire-agent -register
 
-#sudo apt-get install mysql-server mysql-client
+sudo apt-get install mysql-server mysql-client
+sudo apt-get install php5-mysql
