@@ -41,3 +41,6 @@ sudo apt-get -y install elasticsearch
 # sudo vi /etc/elasticsearch/elasticsearch.yml
 # network.host: localhost
 # sudo service elasticsearch restart
+
+# for connect to ElasticSearch
+sudo apt-get install php5-curl
