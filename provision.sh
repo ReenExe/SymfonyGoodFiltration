@@ -23,3 +23,24 @@ sudo apt-get install -y blackfire-php blackfire-agent
 
 sudo apt-get install mysql-server mysql-client
 sudo apt-get install php5-mysql
+
+# How To Install Elasticsearch
+# https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-4-on-ubuntu-14-04
+
+# Java before ElasticSearch
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get -y install oracle-java8-installer
+
+# ElasticSearch
+wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
+echo 'deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main' | sudo tee /etc/apt/sources.list.d/elasticsearch.list
+sudo apt-get update
+sudo apt-get -y install elasticsearch
+
+# sudo vi /etc/elasticsearch/elasticsearch.yml
+# network.host: localhost
+# sudo service elasticsearch restart
+
+# for connect to ElasticSearch
+sudo apt-get install php5-curl
