@@ -32,26 +32,33 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
             );
         ");
 
-        $crawler = new Crawler($this->fetchPage('/texts/other/'));
-
-        $details = $crawler->filter('.b-poster-detail');
-
-        $count = $details->count();
-
-        $links = $details->filter('.b-poster-detail__link')->each(function (Crawler $crawler) {
-            return $crawler->attr('href');
-        });
-
-        foreach ($links as $link) {
-            $this->fetchPage($link);
-        }
+        $this->recursiveParseListPage('/texts/other/');
 
         $duration = microtime(true) - $startTime;
 
         $output->writeln([
-            "<info>Count: $count</info>",
             "<info>Execute: $duration</info>",
         ]);
+    }
+
+    private function recursiveParseListPage($pageUrl)
+    {
+        $crawler = new Crawler($this->fetchPage($pageUrl));
+
+        $nextLinkCrawler = $crawler->filter('.b-pager a.next-link');
+
+        if ($nextLinkCrawler->count()) {
+            $this->recursiveParseListPage($nextLinkCrawler->attr('href'));
+        }
+    }
+
+    private function getDetailPageLinkCollection(Crawler $crawler)
+    {
+        return $crawler
+            ->filter('.b-poster-detail .b-poster-detail__link')
+            ->each(function (Crawler $crawler) {
+                return $crawler->attr('href');
+            });
     }
 
     private function fetchPage($path)
