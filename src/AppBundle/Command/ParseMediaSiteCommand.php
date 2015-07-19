@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ParseMediaSiteCommand extends ContainerAwareCommand
 {
@@ -18,19 +19,29 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $startTime = microtime(true);
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+        // TODO: need rewrite as save better for file storage
         $connection->executeQuery("
+            -- DROP TABLE `site_page_cache`;
             CREATE TABLE IF NOT EXISTS `site_page_cache` (
                 `url` VARCHAR(255) PRIMARY KEY,
-                `value` TEXT
+                `value` MEDIUMBLOB
             );
         ");
 
-        $this->parse('http://fs.to/texts/other/');
+        $crawler = new Crawler($this->parse('http://fs.to/texts/other/'));
 
-        $output->writeln('<info>Execute</info>');
+        $count = $crawler->filter('.b-poster-detail')->count();
+
+        $duration = microtime(true) - $startTime;
+
+        $output->writeln([
+            "<info>Count: $count</info>",
+            "<info>Execute: $duration</info>",
+        ]);
     }
 
     private function parse($url)
@@ -50,7 +61,7 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
         $value = file_get_contents($url);
 
         $connection->executeQuery("
-            INSERT INTO `site_page_cache` (`url`, `value`)
+            REPLACE INTO `site_page_cache` (`url`, `value`)
             VALUES (:url, :value)
         ", compact('url', 'value'));
 
