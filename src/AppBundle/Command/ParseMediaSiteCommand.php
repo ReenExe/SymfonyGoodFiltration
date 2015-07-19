@@ -32,9 +32,19 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
             );
         ");
 
-        $crawler = new Crawler($this->parse('http://fs.to/texts/other/'));
+        $crawler = new Crawler($this->fetchPage('/texts/other/'));
 
-        $count = $crawler->filter('.b-poster-detail')->count();
+        $details = $crawler->filter('.b-poster-detail');
+
+        $count = $details->count();
+
+        $links = $details->filter('.b-poster-detail__link')->each(function (Crawler $crawler) {
+            return $crawler->attr('href');
+        });
+
+        foreach ($links as $link) {
+            $this->fetchPage($link);
+        }
 
         $duration = microtime(true) - $startTime;
 
@@ -44,8 +54,10 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
         ]);
     }
 
-    private function parse($url)
+    private function fetchPage($path)
     {
+        $url = "http://fs.to$path";
+
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
