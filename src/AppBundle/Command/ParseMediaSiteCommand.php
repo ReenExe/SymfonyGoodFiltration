@@ -43,7 +43,9 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
 
     private function recursiveParseListPage($pageUrl)
     {
-        $crawler = new Crawler($this->fetchPage($pageUrl));
+        if (empty($html = $this->fetchPage($pageUrl))) return;
+
+        $crawler = new Crawler($html);
 
         $nextLinkCrawler = $crawler->filter('.b-pager a.next-link');
 
@@ -61,8 +63,13 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
             });
     }
 
-    private function fetchPage($path)
+    private function fetchPage($path, $force = false)
     {
+        static $count = 1;
+
+        if ($count > 100) return;
+        $count++;
+
         $url = "http://fs.to$path";
 
         /* @var $connection Connection */
@@ -76,6 +83,8 @@ class ParseMediaSiteCommand extends ContainerAwareCommand
         if ($value = $stm->fetchColumn()) {
             return $value;
         }
+
+        if ($force === false) return;
 
         $value = file_get_contents($url);
 
