@@ -14,7 +14,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('parse:media:site:list');
+        $this->setName('scrap:media:site:list');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -47,7 +47,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
         do {
             $html =  $client->get($nextListPath)->getBody()->getContents();
 
-            $this->saveList($nextListPath, $html);
+            $this->saveListCache($nextListPath, $html);
 
             $crawler = new Crawler($html);
 
@@ -62,7 +62,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
-        $connection->executeQuery("
+        $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_list_cache` (
                 `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
                 `path` VARCHAR(255),
@@ -71,7 +71,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
             );
         ");
 
-        $connection->executeQuery("
+        $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_page_queue` (
                 `path` VARCHAR(255) PRIMARY KEY,
                 `process` TINYINT DEFAULT 0
@@ -128,7 +128,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
         $connection->commit();
     }
 
-    private function saveList($path, $value)
+    private function saveListCache($path, $value)
     {
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
