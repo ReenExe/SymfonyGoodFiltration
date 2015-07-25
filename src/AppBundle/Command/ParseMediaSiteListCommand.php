@@ -32,6 +32,8 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
 
     private function process($limit)
     {
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://fs.to']);
+
         if ($last = $this->getLast()) {
             $nextListPath = $this->getNextPage(new Crawler($last));
 
@@ -43,9 +45,7 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
         }
 
         do {
-            $url = "http://fs.to$nextListPath";
-
-            $html =  file_get_contents($url);
+            $html =  $client->get($nextListPath)->getBody()->getContents();
 
             $this->saveList($nextListPath, $html);
 
