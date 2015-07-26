@@ -45,6 +45,8 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
 
             $data = $this->getPageData($html);
 
+            dump($data);
+
 //            $this->updateProcess($path)
         }
     }
@@ -56,6 +58,20 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
         $data = [
             'title' => trim($crawler->filter('.b-tab-item__title-inner h1')->text())
         ];
+
+        $tagCrawler = $crawler->filter('.item-info table tr');
+
+        $tags = $tagCrawler->each(function (Crawler $crawler) {
+            $name = trim($crawler->filter('td')->first()->text());
+
+            $list = $crawler->filter('.tag span')->each(function (Crawler $crawler) {
+                return $crawler->text();
+            });
+
+            return compact('name', 'list');
+        });
+
+        $data['tags'] = $tags;
 
         return $data;
     }
