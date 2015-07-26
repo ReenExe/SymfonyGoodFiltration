@@ -23,7 +23,7 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
 
         $this->createProcess();
 
-        $this->process(1);
+        $this->process(1000);
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);
@@ -45,9 +45,9 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
 
             $data = $this->getPageData($html);
 
-            dump($data);
+            $this->savePageData($path, $data);
 
-//            $this->updateProcess($path)
+            $this->updateProcess($path);
         }
     }
 
@@ -121,6 +121,14 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
             ");
     }
 
+    private function savePageData($path, array $data)
+    {
+        $data['path'] = $path;
+        /* @var $connection Connection */
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+        $connection->insert('media_site_structure', $data);
+    }
+
     private function createProcess()
     {
         /* @var $connection Connection */
@@ -133,6 +141,16 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
             )
               AS
             SELECT `path` FROM `media_site_page_queue`;
+        ");
+
+        $connection->exec("
+            CREATE TABLE IF NOT EXISTS `media_site_structure`(
+                `path` VARCHAR(255) PRIMARY KEY,
+                `title` TEXT,
+                `description` TEXT,
+                `image` TEXT,
+                `tags` TEXT
+            );
         ");
     }
 }
