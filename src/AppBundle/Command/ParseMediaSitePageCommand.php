@@ -22,11 +22,17 @@ class ParseMediaSitePageCommand extends ContainerAwareCommand
 
         $this->createCache();
 
-        $this->process(100);
+        $this->process(10);
 
         $duration = microtime(true) - $startTime;
+        $memory = memory_get_usage(true);
+        $peak = memory_get_peak_usage(true);
 
-        $output->writeln("<info>Execute: $duration</info>");
+        $output->writeln([
+            "<info>Execute:  $duration</info>",
+            "<info>Memory:   $memory B</info>",
+            "<info>Peak:     $peak B</info>",
+        ]);
     }
 
     private function process($limit)
