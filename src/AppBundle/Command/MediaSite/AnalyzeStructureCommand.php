@@ -47,17 +47,17 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
             $tags = json_decode($row['tags'], true);
 
             foreach ($tags as $tag) {
-                $tagMap[$tag['name']] = true;
+                $tagMap[$tag['name']][] = $tag['list'];
 
                 $map[$row['path']][$tag['name']] = $tag['list'];
             }
         }
 
-        $tagResultMap = array_map('array_unique', call_user_func_array('array_merge_recursive', $map));
-
-        $tagClassList = array_keys($tagResultMap);
+        $tagClassList = array_keys($tagMap);
 
         $tagNameIdMap = array_flip($this->addTagClassList($tagClassList));
+
+        $this->addTagList($tagNameIdMap, $tagMap);
     }
 
     private function getAllSourceTag()
@@ -90,8 +90,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
             CREATE TABLE IF NOT EXISTS `media_site_tag`(
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `class_id` TINYINT,
-                `name` VARCHAR(255),
-                UNIQUE KEY (`class_id`, `name`)
+                `name` VARCHAR(255)
             );
         ");
     }
@@ -116,5 +115,35 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
         }
 
         return $result;
+    }
+
+    private function addTagList(array $classTagNameIdMap, array $classTagNameMap)
+    {
+        $increment = 1;
+
+        /* @var $connection Connection */
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+
+        $connection->beginTransaction();
+        foreach ($classTagNameMap as $tagClassName => $tagSourceList) {
+            $classId = $classTagNameIdMap[$tagClassName];
+
+            $tagList = array_unique(call_user_func_array('array_merge', $tagSourceList));
+
+            foreach ($tagList as $tagName) {
+                $id = $increment++;
+
+                $connection
+                    ->insert(
+                        'media_site_tag',
+                        [
+                            'id' => $id,
+                            'class_id' => $classId,
+                            'name' => $tagName,
+                        ]
+                    );
+            }
+        }
+        $connection->commit();
     }
 }
