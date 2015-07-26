@@ -73,6 +73,8 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
 
         $data['tags'] = $tags;
 
+        $data['dirtyImage'] = $crawler->filter('.images-show')->attr('style');
+
         return $data;
     }
 
