@@ -57,7 +57,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
         $tagNameIdMap = array_flip($this->addTagClassList($tagClassList));
 
-        $this->addTagList($tagNameIdMap, $tagMap);
+        $classIdTagNameIdMap = $this->addTagList($tagNameIdMap, $tagMap);
     }
 
     private function getAllSourceTag()
@@ -119,6 +119,8 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
     private function addTagList(array $classTagNameIdMap, array $classTagNameMap)
     {
+        $result = [];
+
         $increment = 1;
 
         /* @var $connection Connection */
@@ -131,19 +133,30 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
             $tagList = array_unique(call_user_func_array('array_merge', $tagSourceList));
 
             foreach ($tagList as $tagName) {
-                $id = $increment++;
+                $connection->insert(
+                    'media_site_tag',
+                    [
+                        'id' => $id = $increment++,
+                        'class_id' => $classId,
+                        'name' => $tagName,
+                    ]
+                );
 
-                $connection
-                    ->insert(
-                        'media_site_tag',
-                        [
-                            'id' => $id,
-                            'class_id' => $classId,
-                            'name' => $tagName,
-                        ]
-                    );
+                $result[$classId][$tagName] = $id;
             }
         }
         $connection->commit();
+
+        return $result;
+    }
+
+    private function addPageList()
+    {
+
+    }
+
+    private function addPageToTagLinkList()
+    {
+
     }
 }
