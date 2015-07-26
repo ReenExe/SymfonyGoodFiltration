@@ -56,28 +56,31 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
         $crawler = new Crawler($html);
 
         $data = [
-            'title' => trim($crawler->filter('.b-tab-item__title-inner h1')->text())
+            'title' => trim($crawler->filter('.b-tab-item__title-inner h1')->text()),
+            'description' => trim($crawler->filter('.b-tab-item__description')->text()),
+            // background-image: url(<image>);
+            'image' => substr($crawler->filter('.images-show')->attr('style'), 22, -2),
+            'tags' => json_encode($this->getPageTags($crawler)),
         ];
-
-        $tagCrawler = $crawler->filter('.item-info table tr');
-
-        $tags = $tagCrawler->each(function (Crawler $crawler) {
-            $name = trim($crawler->filter('td')->first()->text());
-
-            $list = $crawler->filter('.tag span')->each(function (Crawler $crawler) {
-                return $crawler->text();
-            });
-
-            return compact('name', 'list');
-        });
-
-        $data['tags'] = $tags;
-
-        // background-image: url(<image>);
-        $data['image'] = substr($crawler->filter('.images-show')->attr('style'), 22, -2);
 
         return $data;
     }
+
+    private function getPageTags(Crawler $crawler)
+    {
+        return $crawler
+            ->filter('.item-info table tr')
+            ->each(function (Crawler $crawler) {
+                $name = trim($crawler->filter('td')->first()->text());
+
+                $list = $crawler->filter('.tag span')->each(function (Crawler $crawler) {
+                    return $crawler->text();
+                });
+
+                return compact('name', 'list');
+            });
+    }
+
 
     private function getPages($limit)
     {
