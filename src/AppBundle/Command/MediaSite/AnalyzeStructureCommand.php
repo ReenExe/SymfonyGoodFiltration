@@ -168,29 +168,26 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
     private function addPageToTagLinkList(array $map, array $tagNameIdMap, array $classIdTagNameIdMap)
     {
-        $entries = [];
-
-        foreach ($map as $path => $tagClassNameMap) {
-            foreach ($tagClassNameMap as $tagClassName => $tagList) {
-                $tagClassId = $tagNameIdMap[$tagClassName];
-                foreach ($tagList as $tagName) {
-                    $entries[] = [
-                        'path' => $path,
-                        'tag_class_id' => $tagClassId,
-                        'tag_id' => $classIdTagNameIdMap[$tagClassId][$tagName]
-                    ];
-                }
-            }
-        }
-
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
-        foreach (array_chunk($entries, 2000) as $part) {
+        foreach (array_slice(array_chunk($map, 1000), 0, 5) as $mapChunk) {
+
             $connection->beginTransaction();
-            foreach ($part as $entry) {
-                $connection->insert('media_site_tag_link', $entry);
+
+            foreach ($mapChunk as $path => $tagClassNameMap) {
+                foreach ($tagClassNameMap as $tagClassName => $tagList) {
+                    $tagClassId = $tagNameIdMap[$tagClassName];
+                    foreach ($tagList as $tagName) {
+                        $connection->insert('media_site_tag_link', [
+                            'path' => $path,
+                            'tag_class_id' => $tagClassId,
+                            'tag_id' => $classIdTagNameIdMap[$tagClassId][$tagName]
+                        ]);
+                    }
+                }
             }
+
             $connection->commit();
         }
     }
