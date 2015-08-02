@@ -171,7 +171,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
-        foreach (array_slice(array_chunk($map, 1000), 0, 5) as $mapChunk) {
+        foreach (array_chunk($map, 5000) as $mapChunk) {
 
             $connection->beginTransaction();
 
