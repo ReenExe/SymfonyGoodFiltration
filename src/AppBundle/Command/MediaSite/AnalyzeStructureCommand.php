@@ -58,6 +58,8 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
         $tagNameIdMap = array_flip($this->addTagClassList($tagClassList));
 
         $classIdTagNameIdMap = $this->addTagList($tagNameIdMap, $tagMap);
+
+        $this->addPageToTagLinkList($map, $tagNameIdMap, $classIdTagNameIdMap);
     }
 
     private function getAllSourceTag()
@@ -77,6 +79,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
         $connection->exec("DROP TABLE IF EXISTS `media_site_tag_class`;");
         $connection->exec("DROP TABLE IF EXISTS `media_site_tag`;");
+        $connection->exec("DROP TABLE IF EXISTS `media_site_tag_link`;");
 
         $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_tag_class`(
@@ -91,6 +94,14 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `class_id` TINYINT,
                 `name` VARCHAR(255)
+            );
+        ");
+
+        $connection->exec("
+            CREATE TABLE IF NOT EXISTS `media_site_tag_link`(
+                `path` VARCHAR(255),
+                `tag_class_id` TINYINT,
+                `tag_id` INT
             );
         ");
     }
@@ -155,8 +166,23 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
     }
 
-    private function addPageToTagLinkList()
+    private function addPageToTagLinkList(array $map, array $tagNameIdMap, array $classIdTagNameIdMap)
     {
+        /* @var $connection Connection */
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+        foreach ($map as $path => $tagClassNameMap) {
+            foreach ($tagClassNameMap as $tagClassName => $tagList) {
+                $tagClassId = $tagNameIdMap[$tagClassName];
+
+                foreach ($tagList as $tagName) {
+                    $connection->insert('media_site_tag_link', [
+                        'path' => $path,
+                        'tag_class_id' => $tagClassId,
+                        'tag_id' => $classIdTagNameIdMap[$tagClassId][$tagName]
+                    ]);
+                }
+            }
+        }
     }
 }
