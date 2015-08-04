@@ -134,6 +134,11 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
         /* @var $connection Connection */
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+//        $connection->exec("
+//            DROP TABLE IF EXISTS `media_site_structure_queue`;
+//            DROP TABLE IF EXISTS `media_site_structure`;
+//        ");
+
         $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_structure_queue` (
                 `path` VARCHAR(255) PRIMARY KEY,
@@ -145,7 +150,8 @@ class CreateMediaSiteStructureCommand extends ContainerAwareCommand
 
         $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_structure`(
-                `path` VARCHAR(255) PRIMARY KEY,
+                `id` INT PRIMARY KEY AUTO_INCREMENT,
+                `path` VARCHAR(255),
                 `title` TEXT,
                 `description` TEXT,
                 `image` TEXT,
