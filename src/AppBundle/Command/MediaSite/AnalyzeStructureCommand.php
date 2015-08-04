@@ -49,7 +49,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
             foreach ($tags as $tag) {
                 $tagMap[$tag['name']][] = $tag['list'];
 
-                $map[$row['path']][$tag['name']] = $tag['list'];
+                $map[$row['id']][$tag['name']] = $tag['list'];
             }
         }
 
@@ -68,7 +68,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
         return $connection->fetchAll("
-            SELECT `path`, `tags` FROM `media_site_structure`
+            SELECT `id`, `tags` FROM `media_site_structure`
         ");
     }
 
@@ -99,7 +99,7 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
         $connection->exec("
             CREATE TABLE IF NOT EXISTS `media_site_tag_link`(
-                `path` VARCHAR(255),
+                `id` VARCHAR(255),
                 `tag_class_id` TINYINT,
                 `tag_id` INT
             );
@@ -175,12 +175,12 @@ class AnalyzeStructureCommand extends ContainerAwareCommand
 
             $connection->beginTransaction();
 
-            foreach ($mapChunk as $path => $tagClassNameMap) {
+            foreach ($mapChunk as $id => $tagClassNameMap) {
                 foreach ($tagClassNameMap as $tagClassName => $tagList) {
                     $tagClassId = $tagNameIdMap[$tagClassName];
                     foreach ($tagList as $tagName) {
                         $connection->insert('media_site_tag_link', [
-                            'path' => $path,
+                            'id' => $id,
                             'tag_class_id' => $tagClassId,
                             'tag_id' => $classIdTagNameIdMap[$tagClassId][$tagName]
                         ]);
