@@ -7,11 +7,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class ApiFilterController extends Controller
 {
     /**
      * @Route("/api/filter/list", name="filter")
+     * @ApiDoc(
+     *  description="Get List",
+     *  parameters={
+     *      {"name"="limit", "dataType"="integer", "required"=false},
+     *      {"name"="offset", "dataType"="integer", "required"=false}
+     *  },
+     *  section="books"
+     * )
      */
     public function listAction(Request $request)
     {
