@@ -2,17 +2,38 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Book;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiFilterController extends Controller
 {
     /**
      * @Route("/api/filter/list", name="filter")
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-        return new JsonResponse();
+        $limit = $request->query->get('limit', 100);
+        $offset = $request->query->get('limit', 100);
+
+        $books = $this
+            ->get('doctrine')
+            ->getRepository('AppBundle:Book')
+            ->findBy([], [], $limit, $offset);
+
+        $result = [];
+        /* @var $book Book */
+        foreach ($books as $book) {
+            $result[] = [
+                'title' => $book->getTitle(),
+                'description' => $book->getDescription(),
+            ];
+        }
+
+        return new JsonResponse([
+            'items' => $result
+        ]);
     }
 }
