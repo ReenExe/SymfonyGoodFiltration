@@ -9,10 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-class ApiFilterController extends Controller
+class ApiBookController extends Controller
 {
     /**
-     * @Route("/api/filter/list", name="filter")
      * @ApiDoc(
      *  description="Get List",
      *  parameters={
