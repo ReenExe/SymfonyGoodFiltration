@@ -84,3 +84,5 @@ fos_elastica:
         default: { host: 127.0.0.1, port: 9200 }
     indexes:
         app: ~
+
+nelmio_api_doc: ~
