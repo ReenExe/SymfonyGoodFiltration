@@ -18,7 +18,7 @@ class Version20150906191505 extends AbstractMigration
         $this->addSql('
             CREATE TABLE `rr_book`(
               `id` INT PRIMARY KEY AUTO_INCREMENT,
-              `name` VARCHAR(255),
+              `title` VARCHAR(255),
               `description` VARCHAR(255)
             )
         ');

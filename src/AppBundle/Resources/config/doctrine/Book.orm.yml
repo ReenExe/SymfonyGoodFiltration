@@ -9,7 +9,7 @@ AppBundle\Entity\Book:
         strategy: AUTO
 
   fields:
-    name:
+    title:
       type: string
       length: 255
     description:
