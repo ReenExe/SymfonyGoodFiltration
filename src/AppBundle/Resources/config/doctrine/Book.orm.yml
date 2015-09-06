@@ -1,0 +1,17 @@
+AppBundle\Entity\Book:
+  type: entity
+  table: rr_book
+
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+
+  fields:
+    name:
+      type: string
+      length: 255
+    description:
+      type: string
+      length: 255
