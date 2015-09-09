@@ -24,7 +24,7 @@ class ApiBookController extends Controller
     public function listAction(Request $request)
     {
         $limit = $request->query->get('limit', 100);
-        $offset = $request->query->get('limit', 100);
+        $offset = $request->query->get('offset', 100);
 
         $books = $this
             ->get('doctrine')
