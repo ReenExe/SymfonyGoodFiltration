@@ -9,4 +9,4 @@ export LANG=en_US.UTF-8
 # -q             In command-line mode, suppress the incremental progress indicators.
 sudo aptitude update -q
 
-sudo aptitude install -q -y -f php5-cli php5-mysql php5-curl
+sudo aptitude install -q -y -f php5-cli php5-curl

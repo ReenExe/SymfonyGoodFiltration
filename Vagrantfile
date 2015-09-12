@@ -25,8 +25,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
-  config.vm.provision :shell, path: "provision.sh"
-  config.vm.provision :shell, path: "nginx.sh"
+  config.vm.provision :shell, path: "vagrant/php.sh"
+  config.vm.provision :shell, path: "vagrant/nginx.sh"
+  config.vm.provision :shell, path: "vagrant/mysql.sh"
 
   config.vm.provision :shell, :inline => <<-EOT
        echo 'LC_ALL="en_US.UTF-8"'  >  /etc/default/locale

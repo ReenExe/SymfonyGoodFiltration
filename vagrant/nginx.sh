@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sudo aptitude install -q -y -f mysql-server mysql-client nginx php5-fpm
+sudo aptitude install -q -y -f nginx php5-fpm
 
 sudo rm /etc/nginx/sites-available/default
 sudo touch /etc/nginx/sites-available/default
