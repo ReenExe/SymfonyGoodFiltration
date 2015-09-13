@@ -8,6 +8,7 @@ while true; do
         echo "Done scraping list"
         break
     fi
+    echo '...';
 done
 
 while true; do
@@ -18,4 +19,5 @@ while true; do
         echo "Done scraping page"
         break
     fi
+    echo '...';
 done
