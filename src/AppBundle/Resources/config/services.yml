@@ -4,9 +4,9 @@ services:
     arguments: [@doctrine]
 
   scrap_page_service:
-    class: AppBundle\Service\Scrap\PageScrapper
+    class: AppBundle\Service\Scrap\PageScraper
     arguments: [@doctrine.dbal.default_connection]
 
   scrap_list_service:
-    class: AppBundle\Service\Scrap\ListScrapper
+    class: AppBundle\Service\Scrap\ListScraper
     arguments: [@doctrine.dbal.default_connection]

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
-class PageScrapper extends Scraper
+class PageScraper extends Scraper
 {
     protected function process($limit)
     {

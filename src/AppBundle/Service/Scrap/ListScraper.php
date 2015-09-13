@@ -4,7 +4,7 @@ namespace AppBundle\Service\Scrap;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListScrapper extends Scraper
+class ListScraper extends Scraper
 {
     protected function process($limit)
     {
