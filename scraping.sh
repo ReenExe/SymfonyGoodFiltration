@@ -1,11 +1,11 @@
 #!/bin/bash
 
-STEPS=( "app/console scrap:media:site:list" "app/console scrap:media:site:page" )
+STEPS=( "scrap:media:site:list" "scrap:media:site:page" )
 
 for STEP in "${STEPS[@]}"
 do
     while true; do
-        $STEP
+        app/console $STEP
         EXIT_CODE=$?
         if test $EXIT_CODE -eq 1
         then
