@@ -16,6 +16,6 @@ class DefaultController extends Controller
 
         $now = $result->fetchColumn();
 
-        return $this->render('default/index.html.twig', ['now' => $now]);
+        return $this->render('AppBundle:default:index.html.twig', ['now' => $now]);
     }
 }
