@@ -6,8 +6,10 @@
             {% for book in items %}
                 <div class="col-xs-6 col-md-3">
                     <div class="thumbnail">
-                        <span>{{ book.title }}</span>
-                        <span>{{ book.description }}</span>
+                        <div class="caption">
+                            <h3>{{ book.title }}</h3>
+                            <p>{{ book.description }}</p>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
