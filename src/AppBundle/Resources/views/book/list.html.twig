@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    List
+    {# @var items \AppBundle\Entity\Book[] #}
+    <ul>
+
+        {% for book in items %}
+            <li>
+                <span>{{ book.title }}</span>
+                <span>{{ book.description }}</span>
+            </li>
+        {% endfor %}
+
+    </ul>
 {% endblock %}

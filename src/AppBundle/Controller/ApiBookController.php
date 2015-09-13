@@ -28,10 +28,9 @@ class ApiBookController extends Controller
         $books = $this
             ->get('doctrine')
             ->getRepository('AppBundle:Book')
-            ->findBy([], [], $limit, $offset);
+            ->getList($limit, $offset);
 
         $result = [];
-        /* @var $book Book */
         foreach ($books as $book) {
             $result[] = [
                 'title' => $book->getTitle(),

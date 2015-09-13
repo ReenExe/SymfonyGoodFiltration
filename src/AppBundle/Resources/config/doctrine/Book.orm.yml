@@ -1,6 +1,7 @@
 AppBundle\Entity\Book:
   type: entity
   table: rr_book
+  repositoryClass: AppBundle\Repository\BookRepository
 
   id:
     id:
