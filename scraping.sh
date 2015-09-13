@@ -5,7 +5,7 @@ while true; do
     EXIT_CODE=$?
     if test $EXIT_CODE -eq 1
     then
-        echo "Done scrapinf list"
+        echo "Done scraping list"
         break
     fi
 done
