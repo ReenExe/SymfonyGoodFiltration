@@ -12,6 +12,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ParseMediaSiteListCommand extends ContainerAwareCommand
 {
+    const END = 1;
+
     protected function configure()
     {
         $this->setName('scrap:media:site:list');
@@ -23,11 +25,13 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
 
         $this->createCache();
 
-        $this->process(100);
+        $exitCode = $this->process(100);
 
         $duration = microtime(true) - $startTime;
 
         $output->writeln("<info>Execute: $duration</info>");
+
+        return $exitCode;
     }
 
     private function process($limit)
@@ -37,8 +41,9 @@ class ParseMediaSiteListCommand extends ContainerAwareCommand
         if ($last = $this->getLast()) {
             $nextListPath = $this->getNextPage(new Crawler($last));
 
-            // END PAGE
-            if (empty($nextListPath)) return;
+            if (empty($nextListPath)) {
+                return self::END;
+            }
 
         } else {
             $nextListPath = '/texts/other/';
