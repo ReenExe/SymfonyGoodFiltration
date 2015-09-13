@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ParseMediaSitePageCommand extends ContainerAwareCommand
 {
+    const END = 1;
+
     protected function configure()
     {
         $this->setName('scrap:media:site:page');
@@ -22,7 +24,7 @@ class ParseMediaSitePageCommand extends ContainerAwareCommand
 
         $this->createCache();
 
-        $this->process(10);
+        $exitCode = $this->process(100);
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);
@@ -33,6 +35,8 @@ class ParseMediaSitePageCommand extends ContainerAwareCommand
             "<info>Memory:   $memory B</info>",
             "<info>Peak:     $peak B</info>",
         ]);
+
+        return $exitCode;
     }
 
     private function process($limit)
@@ -40,6 +44,10 @@ class ParseMediaSitePageCommand extends ContainerAwareCommand
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://fs.to']);
 
         $pages = array_column($this->getPages($limit), 'path');
+
+        if (empty($pages)) {
+            return self::END;
+        }
 
         foreach ($pages as $path) {
             $html = $client->get($path)->getBody()->getContents();
