@@ -1,5 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/vendor/bootstrap.min.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     Homepage {{ now }}
 {% endblock %}

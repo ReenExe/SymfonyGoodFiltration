@@ -2,7 +2,6 @@
 .vagrant
 composer.phar
 composer.lock
-provision.sh
 vendor
 symfony.phar
 app/bootstrap.php.cache
