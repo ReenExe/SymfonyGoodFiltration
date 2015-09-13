@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class ScrapMediaSiteCommand extends ContainerAwareCommand
 {
+    protected $limit = 100;
     /**
      * @return \AppBundle\Service\Scrap\Scraper
      */
@@ -19,7 +20,7 @@ abstract class ScrapMediaSiteCommand extends ContainerAwareCommand
     {
         $startTime = microtime(true);
 
-        $exitCode = $this->getService()->execute(100);
+        $exitCode = $this->getService()->execute($this->limit);
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);
