@@ -1,0 +1,4 @@
+services:
+  book_service:
+    class: AppBundle\Service\BookService
+    arguments: [@doctrine]
