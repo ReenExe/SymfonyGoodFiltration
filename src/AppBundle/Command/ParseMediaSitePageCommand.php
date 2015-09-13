@@ -51,9 +51,7 @@ class ParseMediaSitePageCommand extends ContainerAwareCommand
 
         foreach ($pages as $path) {
             $html = $client->get($path)->getBody()->getContents();
-
             $this->savePageCache($path, $html);
-
             $this->updateProcess($path);
         }
     }

@@ -1,23 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-while true; do
-    app/console scrap:media:site:list
-    EXIT_CODE=$?
-    if test $EXIT_CODE -eq 1
-    then
-        echo "Done scraping list"
-        break
-    fi
-    echo '...';
-done
+STEPS=( "app/console scrap:media:site:list" "app/console scrap:media:site:page" )
 
-while true; do
-    app/console scrap:media:site:page
-    EXIT_CODE=$?
-    if test $EXIT_CODE -eq 1
-    then
-        echo "Done scraping page"
-        break
-    fi
-    echo '...';
+for STEP in "${STEPS[@]}"
+do
+    while true; do
+        $STEP
+        EXIT_CODE=$?
+        if test $EXIT_CODE -eq 1
+        then
+            echo "Done"
+            break
+        fi
+        echo '...';
+    done
 done
