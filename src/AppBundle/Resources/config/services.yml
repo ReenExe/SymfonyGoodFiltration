@@ -2,3 +2,11 @@ services:
   book_service:
     class: AppBundle\Service\BookService
     arguments: [@doctrine]
+
+  scrap_page_service:
+    class: AppBundle\Service\Scrap\PageScrapper
+    arguments: [@doctrine.dbal.default_connection]
+
+  scrap_list_service:
+    class: AppBundle\Service\Scrap\ListScrapper
+    arguments: [@doctrine.dbal.default_connection]
