@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command;
 
-class ParseMediaSitePageCommand extends ScrapMediaSiteCommand
+class ScrapMediaSitePageCommand extends ScrapMediaSiteCommand
 {
     protected function configure()
     {
