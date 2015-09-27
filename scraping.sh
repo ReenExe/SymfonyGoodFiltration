@@ -3,8 +3,9 @@
 startTime=`date +%s`
 
 STEPS=(
-    "scrap:media:site:list" "scrap:media:site:page"
-    "create:media:site:structure" "media:site:analyze:structure"
+    "scrap:media:site:list"
+    "scrap:media:site:page"
+    "create:media:site:structure"
 )
 
 for STEP in "${STEPS[@]}"
@@ -21,6 +22,7 @@ do
     done
 done
 
+app/console media:site:analyze:structure
 app/console doctrine:migrations:migrate --no-interaction
 app/console media:site:fill:book
 

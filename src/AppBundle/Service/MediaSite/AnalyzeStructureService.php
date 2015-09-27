@@ -31,8 +31,6 @@ class AnalyzeStructureService extends AbstractQueueService
         $classIdTagNameIdMap = $this->addTagList($tagNameIdMap, $tagMap);
 
         $this->addPageToTagLinkList($map, $tagNameIdMap, $classIdTagNameIdMap);
-
-        return self::END;
     }
 
     private function getAllSourceTag()
