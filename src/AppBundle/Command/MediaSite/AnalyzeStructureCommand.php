@@ -2,9 +2,9 @@
 
 namespace AppBundle\Command\MediaSite;
 
-use AppBundle\Command\AbstractQueueComand;
+use AppBundle\Command\Core\QueueComand;
 
-class AnalyzeStructureCommand extends AbstractQueueComand
+class AnalyzeStructureCommand extends QueueComand
 {
     protected function configure()
     {

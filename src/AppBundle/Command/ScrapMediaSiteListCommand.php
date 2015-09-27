@@ -2,7 +2,9 @@
 
 namespace AppBundle\Command;
 
-class ScrapMediaSiteListCommand extends ScrapMediaSiteCommand
+use AppBundle\Command\Core\QueueComand;
+
+class ScrapMediaSiteListCommand extends QueueComand
 {
     protected function configure()
     {

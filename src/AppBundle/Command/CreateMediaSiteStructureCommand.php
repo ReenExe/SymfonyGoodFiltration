@@ -2,7 +2,9 @@
 
 namespace AppBundle\Command;
 
-class CreateMediaSiteStructureCommand extends AbstractQueueComand
+use AppBundle\Command\Core\QueueComand;
+
+class CreateMediaSiteStructureCommand extends QueueComand
 {
     protected $limit = 1000;
 
