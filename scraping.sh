@@ -17,4 +17,5 @@ do
 done
 
 app/console media:site:analyze:structure
+app/console doctrine:migrations:migrate
 app/console media:site:fill:book
