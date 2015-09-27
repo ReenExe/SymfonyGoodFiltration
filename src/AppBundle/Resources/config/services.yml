@@ -5,6 +5,7 @@ services:
 
   conection_service:
     abstract:  true
+    class: AppBundle\Service\ConnectionService
     arguments: [@doctrine.dbal.default_connection]
 
   scrap_page_service:
