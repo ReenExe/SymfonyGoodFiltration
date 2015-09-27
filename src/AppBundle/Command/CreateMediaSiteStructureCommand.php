@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateMediaSiteStructureCommand extends AbstractQueueComand
 {
+    protected $limit = 1000;
+
     protected function configure()
     {
         $this->setName('create:media:site:structure');
