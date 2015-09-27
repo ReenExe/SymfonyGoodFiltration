@@ -1,6 +1,9 @@
 #!/bin/bash
 
-STEPS=( "scrap:media:site:list" "scrap:media:site:page" "create:media:site:structure" )
+STEPS=(
+    "scrap:media:site:list" "scrap:media:site:page"
+    "create:media:site:structure" "media:site:analyze:structure"
+)
 
 for STEP in "${STEPS[@]}"
 do
@@ -16,6 +19,5 @@ do
     done
 done
 
-app/console media:site:analyze:structure
 app/console doctrine:migrations:migrate
 app/console media:site:fill:book

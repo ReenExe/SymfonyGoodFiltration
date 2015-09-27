@@ -14,3 +14,7 @@ services:
   mesi.structure_service:
     class: AppBundle\Service\MediaSite\StructureService
     arguments: [@doctrine.dbal.default_connection]
+
+  mesi.analyze_structure_service:
+    class: AppBundle\Service\MediaSite\AnalyzeStructureService
+    arguments: [@doctrine.dbal.default_connection]
