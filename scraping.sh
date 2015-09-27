@@ -19,5 +19,5 @@ do
     done
 done
 
-app/console doctrine:migrations:migrate
+app/console doctrine:migrations:migrate --no-interaction
 app/console media:site:fill:book
