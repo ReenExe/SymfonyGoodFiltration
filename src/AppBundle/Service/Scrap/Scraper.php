@@ -2,18 +2,11 @@
 
 namespace AppBundle\Service\Scrap;
 
-use Doctrine\DBAL\Connection;
+use AppBundle\Service\ConnectionService;
 
-abstract class Scraper
+abstract class Scraper extends ConnectionService
 {
     const END = 1;
-
-    protected $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
 
     /**
      * @param $limit

@@ -10,3 +10,7 @@ services:
   scrap_list_service:
     class: AppBundle\Service\Scrap\ListScraper
     arguments: [@doctrine.dbal.default_connection]
+
+  ms.structure_service:
+    class: AppBundle\Service\MediaSite\StructureService
+    arguments: [@doctrine.dbal.default_connection]
