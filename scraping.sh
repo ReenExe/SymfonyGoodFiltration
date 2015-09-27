@@ -15,3 +15,6 @@ do
         echo '...';
     done
 done
+
+app/console media:site:analyze:structure
+app/console media:site:fill:book
