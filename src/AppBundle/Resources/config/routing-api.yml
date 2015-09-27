@@ -1,0 +1,4 @@
+api_book_list:
+  path: /book/list
+  defaults: { _controller: AppBundle:ApiBook:list }
+  methods: GET
