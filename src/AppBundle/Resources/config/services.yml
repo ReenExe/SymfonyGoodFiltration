@@ -3,18 +3,22 @@ services:
     class: AppBundle\Service\BookService
     arguments: [@doctrine]
 
-  scrap_page_service:
-    class: AppBundle\Service\Scrap\PageScraper
+  conection_service:
+    abstract:  true
     arguments: [@doctrine.dbal.default_connection]
+
+  scrap_page_service:
+    parent: conection_service
+    class: AppBundle\Service\Scrap\PageScraper
 
   scrap_list_service:
+    parent: conection_service
     class: AppBundle\Service\Scrap\ListScraper
-    arguments: [@doctrine.dbal.default_connection]
 
   mesi.structure_service:
+    parent: conection_service
     class: AppBundle\Service\MediaSite\StructureService
-    arguments: [@doctrine.dbal.default_connection]
 
   mesi.analyze_structure_service:
+    parent: conection_service
     class: AppBundle\Service\MediaSite\AnalyzeStructureService
-    arguments: [@doctrine.dbal.default_connection]
