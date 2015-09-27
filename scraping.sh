@@ -1,5 +1,7 @@
 #!/bin/bash
 
+startTime=`date +%s`
+
 STEPS=(
     "scrap:media:site:list" "scrap:media:site:page"
     "create:media:site:structure" "media:site:analyze:structure"
@@ -21,3 +23,6 @@ done
 
 app/console doctrine:migrations:migrate --no-interaction
 app/console media:site:fill:book
+
+endTime=`date +%s`
+echo execution time was `expr $endTime - $startTime` s.
