@@ -2,13 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Book;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations;
 
-class ApiBookController extends Controller
+class ApiBookController extends FOSRestController
 {
     /**
      * @ApiDoc(
@@ -19,11 +18,12 @@ class ApiBookController extends Controller
      *  },
      *  section="books"
      * )
+     * @Annotations\View
      */
     public function listAction(Request $request)
     {
-        return new JsonResponse([
+        return [
             'items' => $this->get('book_service')->getList($request)
-        ]);
+        ];
     }
 }

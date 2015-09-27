@@ -85,4 +85,10 @@ fos_elastica:
     indexes:
         app: ~
 
+fos_rest:
+    view:
+        view_response_listener: true
+    routing_loader:
+        default_format: json
+
 nelmio_api_doc: ~
