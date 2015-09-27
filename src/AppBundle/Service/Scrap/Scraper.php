@@ -2,22 +2,10 @@
 
 namespace AppBundle\Service\Scrap;
 
-use AppBundle\Service\ConnectionService;
+use AppBundle\Service\AbstractQueueService;
 
-abstract class Scraper extends ConnectionService
+abstract class Scraper extends AbstractQueueService
 {
-    const END = 1;
-
-    /**
-     * @param $limit
-     * @return mixed
-     */
-    public function execute($limit)
-    {
-        $this->createCache();
-        return $this->process($limit);
-    }
-
     /**
      * @return \GuzzleHttp\Client
      */
@@ -27,8 +15,4 @@ abstract class Scraper extends ConnectionService
             'base_uri'      => 'http://fs.to'
         ]);
     }
-
-    abstract protected function createCache();
-
-    abstract protected function process($limit);
 }

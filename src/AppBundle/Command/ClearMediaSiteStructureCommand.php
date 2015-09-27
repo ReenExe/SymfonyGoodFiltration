@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +17,6 @@ class ClearMediaSiteStructureCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('ms.structure_service')->clear();
+        $this->getContainer()->get('mesi.structure_service')->clear();
     }
 }
