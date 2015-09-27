@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STEPS=( "scrap:media:site:list" "scrap:media:site:page" )
+STEPS=( "scrap:media:site:list" "scrap:media:site:page" "create:media:site:structure" )
 
 for STEP in "${STEPS[@]}"
 do

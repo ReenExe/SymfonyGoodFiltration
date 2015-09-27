@@ -19,6 +19,10 @@ class StructureService extends AbstractQueueService
     {
         $pages = array_column($this->getPages($limit), 'path');
 
+        if (empty($pages)) {
+            return self::END;
+        }
+
         foreach ($pages as $path) {
             $html = $this->getCachedPage($path);
 
