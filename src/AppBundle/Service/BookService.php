@@ -32,6 +32,7 @@ class BookService
             $result[] = [
                 'title' => $book->getTitle(),
                 'description' => $book->getDescription(),
+                'image' => $book->getImage(),
             ];
         }
 

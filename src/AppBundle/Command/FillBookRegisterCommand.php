@@ -26,8 +26,8 @@ class FillBookRegisterCommand extends ContainerAwareCommand
         ');
 
         $connection->exec('
-            INSERT INTO `rr_book` (`title`, `description`)
-            SELECT `title`, `description` FROM `media_site_structure`;
+            INSERT INTO `rr_book` (`title`, `description`, `image`)
+            SELECT `title`, `description`, `image` FROM `media_site_structure`;
         ');
     }
 }

@@ -16,3 +16,5 @@ AppBundle\Entity\Book:
     description:
       type: string
       length: 255
+    image:
+      type: string

@@ -24,6 +24,11 @@ class Book
      */
     private $description;
 
+    /**
+     * @var string
+     */
+    private $image;
+
 
     /**
      * Get id
@@ -79,5 +84,28 @@ class Book
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return Book
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string 
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }
