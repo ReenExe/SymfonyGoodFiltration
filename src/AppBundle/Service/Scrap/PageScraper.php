@@ -2,6 +2,9 @@
 
 namespace AppBundle\Service\Scrap;
 
+use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Http\Message\ResponseInterface;
+
 class PageScraper extends Scraper
 {
     protected function process($limit)
@@ -12,12 +15,28 @@ class PageScraper extends Scraper
             return self::END;
         }
 
+        /* @var $promises PromiseInterface[] */
+        $promises = [];
         $client = $this->getClient();
         foreach ($pages as $path) {
-            $html = $client->get($path)->getBody()->getContents();
-            $this->savePageCache($path, $html);
-            $this->updateProcess($path);
+            $promises[] = $client
+                ->getAsync($path)
+                ->then(function (ResponseInterface $response) use ($path) {
+                    $html = $response->getBody()->getContents();
+                    $this->savePageCache($path, $html);
+                    $this->updateProcess($path);
+                });
         }
+
+        do {
+            foreach ($promises as $key => $promise) {
+                if ($promise->getState() === PromiseInterface::FULFILLED) {
+                    unset($promises[$key]);
+                } else {
+                    $promise->wait();
+                }
+            }
+        } while ($promises);
     }
 
     protected function createCache()
