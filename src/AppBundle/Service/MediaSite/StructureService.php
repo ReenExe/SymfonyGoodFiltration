@@ -17,7 +17,7 @@ class StructureService extends AbstractQueueService
 
     protected function process($limit)
     {
-        $pages = array_column($this->getPages($limit), 'path');
+        $pages = $this->getPages($limit);
 
         if (empty($pages)) {
             return self::END;
@@ -67,12 +67,13 @@ class StructureService extends AbstractQueueService
 
     private function getPages($limit)
     {
-        return $this->connection
-            ->fetchAll("
-                SELECT `path` FROM `media_site_structure_queue`
-                WHERE `process` = 0
-                LIMIT $limit;
-            ");
+        $stmt = $this->connection->prepare("
+            SELECT `path` FROM `media_site_structure_queue`
+            WHERE `process` = 0
+            LIMIT $limit;
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);    
     }
 
     private function getCachedPage($path)
